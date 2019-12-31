@@ -7,11 +7,11 @@
 5.	aws cli
 6.	eksctl
 
-##	VirtualBox
+##	[VirtualBox](https://www.virtualbox.org/)
 
 VirtualBox is a general-purpose full virtualization for x86 hardware. 
 
-#### PreReq
+#### 1. PreReq
 
 Check to make sure your laptop supports virtualization
 
@@ -25,19 +25,19 @@ CLI example on Mac
 sysctl -a | grep -E --color 'machdep.cpu.features|VMX'
 `
 
-#### Download
+#### 2. Download
 
 Download and install Virtualbox for your Operating System
 
 https://www.virtualbox.org/wiki/Downloads
 
-#### Install
+#### 3. Install
 
 Installation details 
 
 https://www.virtualbox.org/manual/UserManual.html#installation
 
-#### Verify
+#### 4. Verify
 
 Download and run a Virtualbox image
 
@@ -47,126 +47,128 @@ There are many options when working with Virtualbox
 - [OS Boxes](https://www.osboxes.org/virtualbox-images/)
 - Manual - Download a copy of an OS and [run through creating your first VM](https://www.virtualbox.org/manual/UserManual.html#intro-running)
 
-###	[Docker](https://docs.docker.com/install/)
+##	[Docker](https://docs.docker.com/install/)
 
 Docker is an open source container runtime
 
-#### PreReq
+#### 1. PreReq
 
 - [Docker Hub account](https://hub.docker.com/sso/start)
 - See the install for system requirements for your operating system.
 
 
-#### Download
+#### 2. Download
 Download Docker for your operating system
 
 - [Mac](https://docs.docker.com/docker-for-mac/)
 - [Windows](https://docs.docker.com/docker-for-windows/)
 
-#### Install
+#### 3. Install
 
 - [Mac](https://docs.docker.com/docker-for-mac/install/)
 - [Windows](https://docs.docker.com/docker-for-windows/install/)
 
-#### Verify
+#### 4. Verify
 
 `docker --version`
 
 `docker run hello-world`
 
-##	kubectl
+##	[kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 
 kubectl is the main entry point into the kubernetes API.  
 
-#### PreReq
+#### 1. PreReq
 
 You must use a kubectl version that is within one minor version difference of your cluster. 
 For example, a v1.2 client should work with v1.1, v1.2, and v1.3 master. Using the latest version of 
 kubectl helps avoid unforeseen issues.
 
-#### Download
+#### 2. Download
 
-#### Install
+See Install
+
+#### 3. Install
 
 - [Mac](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-macos)
 - [Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-windows)
 - [Linux](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-macos)
 
-#### Verify
+#### 4. Verify
 
 `kubectl version`
 
 ##	[KIND (Kubernetes in Docker)](https://kind.sigs.k8s.io/)
 
-#### PreReq
+#### 1. PreReq
 
 - Docker
 
-#### Download
+#### 2. Download
 
 https://kind.sigs.k8s.io/docs/user/quick-start
 
-#### Install
+#### 3. Install
 
 https://kind.sigs.k8s.io/docs/user/quick-start
 
-#### Verify
+#### 4. Verify
 
 `kind create cluster`
 
-##	aws cli
+##	[aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
 
 AWS CLI is one of the ways to programmatically access your AWS resources. 
 
-#### PreReq
+#### 1. PreReq
 
 - Python
  
-#### Download
+#### 2. Download
 
 See Install
 
-#### Install
+#### 3. Install
 
 - [Mac/Linux](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux-mac.html)
 - [Windows](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html)
 
-#### Verify
+#### 4. Verify
 
 `aws --version`
 
 `aws-cli/1.16.290 Python/3.7.5 Darwin/19.2.0 botocore/1.13.26`
 
-##	eksctl
+##	[eksctl](https://eksctl.io/)
 
 eksctl is a CLI tool created by weave to help manage kubernetes clusters on AWS easily. 
 
-#### PreReq
+#### 1. PreReq
 
 - AWS CLI 
 
-#### Download
+#### 2. Download
 
 See Install
 
-#### Install
+#### 3. Install
 
 https://eksctl.io/introduction/installation/
 
-#### Verify
+#### 4. Verify
 
 `eksctl version`
 
-### Network Troubleshooting image 
+### [Network Troubleshooting image](https://github.com/strongjz/netshoot?organization=strongjz&organization=strongjz) 
 
-Troubleshooting images can be difficult from outside the cluster, running a container with troubleshooting tools 
+Troubleshooting applications pods can be difficult from outside the cluster, running a container with troubleshooting tools 
 inside the cluster can be helpful. 
 
-#### PreReq
+#### 1. PreReq
 
 - Docker
 
-#### Download
+#### 2. Download
 
 Build it yourself, Dockerfile is located in this [repo here](https://github.com/strongjz/netshoot?organization=strongjz&organization=strongjz)
 
@@ -176,11 +178,11 @@ OR
 
 <INSERT IMAGE HERE> 
 
-#### Install
+#### 3. Install
 
 kubectl run --generator=run-pod/v1 tmp-shell --rm -i --tty --image acloudgurulabs/course_kubernetes_advanced_networking:latest -- /bin/bash
 
-#### Verify
+#### 4. Verify
 
 The Kubectl run should drop you into a shell
 
