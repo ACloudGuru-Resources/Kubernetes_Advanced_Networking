@@ -159,6 +159,21 @@ https://eksctl.io/introduction/installation/
 
 `eksctl version`
 
+`eksctl create cluster`
+
+A cluster will be created with default parameters
+
+- exciting auto-generated name, e.g. “fabulous-mushroom-1527688624”
+- 2x m5.large nodes (this instance type suits most common use-cases, and is good value for money)
+- use official AWS EKS AMI
+- us-west-2 region
+- dedicated VPC (check your quotas)
+-  using static AMI resolver
+
+Lets go ahead and delete that cluster
+
+`eksctl delete cluster --name CLUSTERNAME` 
+
 ### [Network Troubleshooting image](https://github.com/strongjz/netshoot?organization=strongjz&organization=strongjz) 
 
 Troubleshooting applications pods can be difficult from outside the cluster, running a container with troubleshooting tools 
