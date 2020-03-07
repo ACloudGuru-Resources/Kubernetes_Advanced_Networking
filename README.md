@@ -4,7 +4,7 @@ This is the repo for all the code examples and labs for the A Cloud Guru Course
 Advanced Networking with Kubernetes in AWS
 
 ### Chapter 1 COURSE INTRODUCTION
-- [Ch01_L05 - Installing required tools](CH01/CH01_05)
+- [Ch01_L05 - Installing required tools](CH01/CH01_L05)
 
 ### Chapter 2 Container Networking 
 - [Ch02_L05 - Container connectivity](CH02/CH02_L05) 
