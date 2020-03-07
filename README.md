@@ -4,11 +4,10 @@ This is the repo for all the code examples and labs for the A Cloud Guru Course
 Advanced Networking with Kubernetes in AWS
 
 ### Chapter 1 COURSE INTRODUCTION
-- Ch01_L05 - Installing required tools
-- Ch01_L07 - Local Cluster setup
+- [Ch01_L05 - Installing required tools](CH01/CH01_05)
 
 ### Chapter 2 Container Networking 
-- Ch02_L05 - Container connectivity 
+- [Ch02_L05 - Container connectivity](CH02/CH02_L05) 
 
 ### Chapter 3 Kubernetes Networking
 - Ch03_L04 - Setting up an overlay network
