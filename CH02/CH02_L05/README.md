@@ -6,6 +6,7 @@
 3. Investigate services and pods connectivity
 4. Inspect network primitives and map them to pods
 
+![](container_connectivity.png)
 
 ### Linux commands 
 
