@@ -10,26 +10,24 @@ Advanced Networking with Kubernetes on AWS
 - [Ch02_L05 - Container connectivity](CH02/CH02_L05) 
 
 ### Chapter 3 Kubernetes Networking
-- Ch03_L04 - Setting up an overlay network
-- Ch03_L05 - Container Connectivity part 2
-- Ch03_L06 - Pod to Pod Connectivity
-- Ch03_L08 - Troubleshooting DNS inside the cluster
-- Ch03_L09 - Securing the Network with Network Policies
+- [Ch03_L04 - Setting up an overlay network](CH03/CH03_L04) 
+- [Ch03_L08 - Troubleshooting DNS inside the cluster](CH03/CH03_L08) 
+- [Ch03_L09 - Securing the Network with Network Policies](CH03/CH03_L09) 
 
 ### Chapter 4 Accessing the Cluster Network
-- Ch04_L02 - Services NodePort
-- Ch04_L03 - Services ClusterIP
-- Ch04_L04 - Services LoadBalancers
-- Ch04_L05 - Ingress Controllers
-- Ch04_L06 - Ingress Rules
-- Ch04_L07 - Service Meshes
+- [Ch04_L02 - Services NodePort](CH04/CH04_L02) 
+- [Ch04_L03 - Services ClusterIP](CH04/CH04_L03) 
+- [Ch04_L04 - Services LoadBalancers](CH04/CH04_L04) 
+- [Ch04_L05 - Ingress Controllers](CH04/CH04_L05) 
+- [Ch04_L06 - Ingress Rules](CH04/CH04_L06) 
+- [Ch04_L07 - Service Meshes](CH04/CH04_L07) 
 
 ### Chapter 5 AWS Networking and Kubernetes
-- Ch05_L01 - AWS Networking basics review
-- Ch05_L02 - AWS CNI
-- Ch05_L03 - Deploy AWS EKS Cluster
-- Ch05_L04 - AWS ALB Ingress Controller 
-- Ch05_L05 - AWS App Mesh
+- [Ch05_L01 - AWS Networking basics review](CH05/CH05_L01) 
+- [Ch05_L02 - AWS CNI](CH05/CH05_L02) 
+- [Ch05_L03 - Deploy AWS EKS Cluster](CH05/CH05_L03) 
+- [Ch05_L04 - AWS ALB Ingress Controller](CH05/CH05_L04) 
+- [Ch05_L05 - AWS App Mesh](CH05/CH05_L05) 
 
 ### Chapter 6 Conclusion and Next steps
-- Ch06_L01 - Lab Clean up
+- [Ch06_L01 - Lab Clean up](CH06/CH06_L01) 
