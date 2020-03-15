@@ -62,7 +62,7 @@ docker version
 2. Start kind cluster 
 
 ```bash
-kind create cluster --config kind.config --name iptables
+kind create cluster --config kind.yml --name iptables
 ```
 ```bash
 ± |master {1} S:5 U:4 ?:1 ✗| → kind create cluster --config kind.config --name iptables
