@@ -1,5 +1,9 @@
 # Tools Needed for A Cloud Guru Advance Network on Kubernetes in AWS Labs  
 
+### Objectives
+
+Install the list of tools below
+
 1.	VirtualBox
 2.	Docker
 3.	kubectl
