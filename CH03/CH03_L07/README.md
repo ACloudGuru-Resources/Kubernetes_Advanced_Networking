@@ -12,7 +12,7 @@
 
 ### Dnstools images
 
-Useful docker images that can deployed to aide in troubleshooting dns issues 
+Useful docker images that can be deployed to aide in troubleshooting dns issues 
 
 ```bash 
 kubectl run --restart=Never -it --image  infoblox/dnstools dnstools 
@@ -28,6 +28,8 @@ kubectl run --restart=Never -it --image  gcr.io/kubernetes-e2e-test-images/dnsut
 ```bash
 kubectl apply -f dnsutils.yml 
 ```
+ 
+ **Note**
  
  Alpine based images may also have issues 
  
@@ -59,7 +61,7 @@ nameserver 10.96.0.10
 options ndots:5
 ```
 
-it should match the ClusterIP of the CoreDNS Service
+The `nameserver` directive should match the ClusterIP of the CoreDNS Service
 
 ```bash
 ○ → kubectl get svc kube-dns -n kube-system
@@ -121,7 +123,6 @@ Verify logs in CoreDNS
 ```
 Output
 ```bash
- 2020-03-22 14:33:32 ⌚  strongjz-macbook in ~
 ○ →  for p in $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name); do kubectl logs --namespace=kube-system $p; done
 .:53
 2020-03-22T02:55:38.525Z [INFO] plugin/reload: Running configuration MD5 = f64cb9b977c7dfca58c4fab108535a76
@@ -137,7 +138,7 @@ CoreDNS-1.6.2
 linux/amd64, go1.12.8, 795a3eb
 ```
 
-***Known Issue with CoreDNS and /etc/resolv.conf*** 
+**Known Issue with CoreDNS and /etc/resolv.conf** 
 
 Some Linux distros use systemd-resolved and it replaces /etc/resolv.conf to /run/systemd/resolve/resolv.conf
 
@@ -202,9 +203,9 @@ process_resident_memory_bytes - Resident memory size in bytes
 
 Many of the CoreDNS plugins also export metrics when the Prometheus plugin is enabled. 
 
-Exmaple: 
+Example: 
 
-[H]ealth plugin exports](https://coredns.io/plugins/health/) 
+[Health plugin exports](https://coredns.io/plugins/health/) 
 
 coredns_health_request_duration_seconds{} - duration to process a HTTP query to the local /health endpoint. 
 As this a local operation it should be fast. A (large) increase in this duration indicates the CoreDNS process 
@@ -220,7 +221,8 @@ Ensure that your CoreDNS deployment has the priority class set
 
 These will also help see what is going on inside CoreDNS
 
-[Error](https://coredns.io/plugins/errors/) - Any errors encountered during the query processing will be printed to standard output.
+[Error](https://coredns.io/plugins/errors/) - Any errors encountered during the query processing will be printed to 
+standard output.
 
 [Trace](https://coredns.io/plugins/trace/) - enable OpenTracing of how a request flows through CoreDNS
 
@@ -228,11 +230,13 @@ These will also help see what is going on inside CoreDNS
 
 [health](https://coredns.io/plugins/health/) - CoreDNS is up and running this returns a 200 OK HTTP status code
 
-[ready](https://coredns.io/plugins/ready/) - By enabling ready an HTTP endpoint on port 8181 will return 200 OK when all plugins that are able to signal readiness have done so.
+[ready](https://coredns.io/plugins/ready/) - By enabling ready an HTTP endpoint on port 8181 will return 200 OK when 
+all plugins that are able to signal readiness have done so.
 
 **Only use for Testing and NOT in production** 
 
-[debug](https://coredns.io/plugins/debug/) - debug disables the automatic recovery upon a crash so that you’ll get a nice stack trace.
+[debug](https://coredns.io/plugins/debug/) - debug disables the automatic recovery upon a crash so that you’ll get a 
+nice stack trace.
 
 Ready and Health should be used in the deployment
 
@@ -297,6 +301,6 @@ Events:  <none>
 
 [K8s.io debugging DNS](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
 
-[K8s.io Guaranting Critical pods](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/)
+[K8s.io Guaranteeing Critical pods](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/)
 
 [k8s.io Node OOM Behavior](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#node-oom-behavior)
