@@ -249,8 +249,7 @@ Ready and Health should be used in the deployment
 View current coreDNS corefile 
 
 ```bash
- 2020-03-22 14:50:46 ⌚  strongjz-macbook in ~
-○ → kubectl describe cm coredns -n kube-system
+kubectl describe cm coredns -n kube-system
 Name:         coredns
 Namespace:    kube-system
 Labels:       <none>
@@ -282,16 +281,10 @@ Events:  <none>
             
 # Resources
 
-[10 Ways to Shoot Yourself in the Foot with Kubernetes with Datadog](youtube.com/watch?v=QKI-JRs2RIE)
-
-[DNS outages caused by OOM Issues](https://github.com/zalando-incubator/kubernetes-on-aws/blob/dev/docs/postmortems/jan-2019-dns-outage.md)
-
-[Ndot issues](https://www.adammargherio.com/a-perfect-dns-storm/)
-
-[More ndot issues](https://pracucci.com/kubernetes-dns-resolution-ndots-options-and-why-it-may-affect-application-performances.html)
-
-[K8s.io debugging DNS](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
-
-[K8s.io Guaranteeing Critical pods](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/)
-
-[k8s.io Node OOM Behavior](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#node-oom-behavior)
+* [10 Ways to Shoot Yourself in the Foot with Kubernetes with Datadog](youtube.com/watch?v=QKI-JRs2RIE)
+* [DNS outages caused by OOM Issues](https://github.com/zalando-incubator/kubernetes-on-aws/blob/dev/docs/postmortems/jan-2019-dns-outage.md)
+* [Ndot issues](https://www.adammargherio.com/a-perfect-dns-storm/)
+* [More ndot issues](https://pracucci.com/kubernetes-dns-resolution-ndots-options-and-why-it-may-affect-application-performances.html)
+* [K8s.io debugging DNS](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
+* [K8s.io Guaranteeing Critical pods](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/)
+* [k8s.io Node OOM Behavior](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#node-oom-behavior)
