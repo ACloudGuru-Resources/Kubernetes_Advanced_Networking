@@ -12,7 +12,7 @@ Advanced Networking with Kubernetes on AWS
 ### Chapter 3 Kubernetes Networking
 - [Ch03_L04 - Setting up an overlay network](CH03/CH03_L04) 
 - [Ch03_L05 - Securing the Network with Network Policies](CH03/CH03_L05)
-- [Ch03_L08 - Troubleshooting DNS inside the cluster](CH03/CH03_L07) 
+- [Ch03_L07 - Troubleshooting DNS inside the cluster](CH03/CH03_L07) 
  
 
 ### Chapter 4 Accessing the Cluster Network
