@@ -18,7 +18,7 @@ Useful docker images that can be deployed to aide in troubleshooting dns issues
 kubectl run --restart=Never -it --image  infoblox/dnstools dnstools 
 ```
 
-dnsutils used for [kubernetes end to end testing](https://github.com/kubernetes/kubernetes/tree/master/test/images)
+dnsutils is used for [kubernetes end to end testing](https://github.com/kubernetes/kubernetes/tree/master/test/images)
  
 ```bash
 kubectl run --restart=Never -it --image  gcr.io/kubernetes-e2e-test-images/dnsutils:1.3 dnsutils
@@ -29,27 +29,20 @@ kubectl run --restart=Never -it --image  gcr.io/kubernetes-e2e-test-images/dnsut
 kubectl apply -f dnsutils.yml 
 ```
  
- **Note**
+**Note**
+
+Alpine based images may also have issues with search domains since it uses libmusl
+
+This can be worked around this by using fully qualified names or migrate to debian-slim.
+
+More details [here](https://github.com/gliderlabs/docker-alpine/blob/master/docs/caveats.md#dns), 
+[here](https://github.com/coredns/coredns/issues/3391), and [here](https://gitlab.alpinelinux.org/alpine/aports/issues/9017)
  
- Alpine based images may also have issues 
- 
- You will need to work around this by using fully qualified names.
- 
- More details here 
- 
- https://github.com/gliderlabs/docker-alpine/blob/master/docs/caveats.md#dns
- 
- https://gitlab.alpinelinux.org/alpine/aports/issues/9017
- 
- https://github.com/coredns/coredns/issues/3391
- 
- 
- # Failure modes 
+# Failure modes 
 
 ### /etc/resolv.conf
 
-Verify the /etc/resolv.conf 
-
+1. Verify the /etc/resolv.conf 
 
 ```bash
 kubectl exec dnsutils cat /etc/resolv.conf
@@ -61,15 +54,27 @@ nameserver 10.96.0.10
 options ndots:5
 ```
 
-The `nameserver` directive should match the ClusterIP of the CoreDNS Service
+The `nameserver` directive should match the ClusterIP of the CoreDNS Service, in this case 10.96.0.10
 
 ```bash
-○ → kubectl get svc kube-dns -n kube-system
+kubectl get svc kube-dns -n kube-system
 NAME       TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
 kube-dns   ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   15h
-
 ```
 
+2. View all CoreDNS pods
+
+```bash
+kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o wide
+```
+Output
+```bash
+NAME                       READY   STATUS    RESTARTS   AGE   IP           NODE                  NOMINATED NODE   READINESS GATES
+coredns-5644d7b6d9-42g9s   1/1     Running   0          16h   10.244.0.3   stack-control-plane   <none>           <none>
+coredns-5644d7b6d9-mdgdb   1/1     Running   0          16h   10.244.0.2   stack-control-plane   <none>           <none>
+```
+
+3. Check to make sure coreDNS has endpoints 
 ```bash
 kubectl get ep kube-dns --namespace=kube-system
 NAME       ENDPOINTS                                               AGE
@@ -80,9 +85,8 @@ kube-dns   10.244.0.2:53,10.244.0.3:53,10.244.0.2:53 + 3 more...   16h
  kubectl describe ep kube-dns --namespace=kube-system
 ```
 
-Output
-
-2 Pods, with 3 ports exposed, 6 Endpoints 
+Output 2 Pods, with 3 ports exposed, 6 Endpoints
+ 
 ```bash
 Name:         kube-dns
 Namespace:    kube-system
@@ -103,20 +107,7 @@ Subsets:
 Events:  <none>
 ```
 
-
-View all CoreDNS pods
-
-```bash
-kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o wide
-```
-Output
-```bash
-NAME                       READY   STATUS    RESTARTS   AGE   IP           NODE                  NOMINATED NODE   READINESS GATES
-coredns-5644d7b6d9-42g9s   1/1     Running   0          16h   10.244.0.3   stack-control-plane   <none>           <none>
-coredns-5644d7b6d9-mdgdb   1/1     Running   0          16h   10.244.0.2   stack-control-plane   <none>           <none>
-```
-
-Verify logs in CoreDNS
+5. Verify logs in CoreDNS
 
 ```bash
  for p in $(kubectl get pods --namespace=kube-system -l k8s-app=kube-dns -o name); do kubectl logs --namespace=kube-system $p; done
@@ -193,13 +184,13 @@ CoreDNS exports process and Go runtime metrics as well as CoreDNS-specific metri
 
 Set Thresholds on items such 
 
-coredns_dns_request_duration_seconds{server, zone, type} - duration to process each query.
+`coredns_dns_request_duration_seconds` - duration to process each query.
 
-coredns_dns_request_count_total - Counter of DNS requests made per zone, protocol and family
+`coredns_dns_request_count_total` - Counter of DNS requests made per zone, protocol and family
 
 Also on pod level metrics 
 
-process_resident_memory_bytes - Resident memory size in bytes
+`process_resident_memory_bytes` - Resident memory size in bytes
 
 Many of the CoreDNS plugins also export metrics when the Prometheus plugin is enabled. 
 
@@ -207,7 +198,7 @@ Example:
 
 [Health plugin exports](https://coredns.io/plugins/health/) 
 
-coredns_health_request_duration_seconds{} - duration to process a HTTP query to the local /health endpoint. 
+`coredns_health_request_duration_seconds{}` - duration to process a HTTP query to the local /health endpoint. 
 As this a local operation it should be fast. A (large) increase in this duration indicates the CoreDNS process 
 is having trouble keeping up with its query load.
 
