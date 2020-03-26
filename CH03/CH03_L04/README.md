@@ -133,7 +133,7 @@ kube-proxy-wlzl9                   1/1     Running   0          73s
 #### 4.2 Connectivity Test 
 
 ```bash 
-kubectl apply -f https://raw.githubusercontent.com/cilium/cilium/v1.7/examples/kubernetes/connectivity-check/connectivity-check.yaml
+kubectl apply -f ./connectivity-check.yaml
 ```
 Output
 ```bash
