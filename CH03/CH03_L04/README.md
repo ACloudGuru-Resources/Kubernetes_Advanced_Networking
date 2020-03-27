@@ -51,6 +51,10 @@ Output
 kubectl -n kube-system set image daemonset/aws-node aws-node=docker.io/spaster/alpine-sleep
 ```
 
+This is only for ENI Mode, Cilium will act as the eni provisioner for EC2 and not AWS CNI. 
+
+https://docs.cilium.io/en/v1.7/concepts/ipam/eni/
+
 
 ## 3. Deploy Cilium 
 
