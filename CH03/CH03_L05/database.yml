@@ -7,23 +7,23 @@ spec:
     - port: 3306
   selector:
     app: mysql
-  clusterIP: None
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: mysql
 spec:
   selector:
     matchLabels:
       app: mysql
-  strategy:
-    type: Recreate
+  serviceName: "mysql"
+  replicas: 3
   template:
     metadata:
       labels:
         app: mysql
     spec:
+      terminationGracePeriodSeconds: 10
       containers:
         - image: mysql:5.6
           name: mysql
@@ -41,3 +41,11 @@ spec:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
             claimName: mysql-pv-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-persistent-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
