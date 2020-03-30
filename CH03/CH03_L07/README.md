@@ -1,16 +1,21 @@
 # Troubleshooting Cluster DNS
 
 ### Objectives
-1. Troubleshooting Tips
-2. Failure Modes 
-3. Resources/DNS outage stories
+1. Walk through some troubleshooting tips
+2. Discuss failure modes 
+3. Review resources/DNS outage stories
 
 ### Setup Steps
-1. Deploy an kind kubernetes cluster 
+1. Deploy EKS Cluster
+2. Deploy DNS utils images
+3. DNS Resolution 
+4. Walk Through failure modes
+ 
+### 1. Deploy EKS Cluster 
 
-# Troubleshooting Tips
-
-### Dnstools images
+If the cluster from Lecture 4 is not running, walk through the Deployment from [Ch03_L04 - Setting up an overlay network](../CH03_L04)
+ 
+### 2. Deploy DNS utils images
 
 Useful docker images that can be deployed to aide in troubleshooting dns issues 
 
@@ -37,7 +42,149 @@ This can be worked around this by using fully qualified names or migrate to debi
 
 More details [here](https://github.com/gliderlabs/docker-alpine/blob/master/docs/caveats.md#dns), 
 [here](https://github.com/coredns/coredns/issues/3391), and [here](https://gitlab.alpinelinux.org/alpine/aports/issues/9017)
- 
+
+# 3. DNS Resolution 
+
+Deploying Hello Services from previous lecture
+
+Hello Pod endpoints
+```bash
+kubectl apply -f deployment.yml
+```
+
+Hello ClusterIP Service
+```bash
+kubectl apply -f service.yml
+```
+
+Hello Headless Service
+```bash
+kubectl apply -f service-headless.yml
+```
+
+Resolve Hello service
+```bash
+kubectl exec -it dnsutils -- host -v -t a hello
+```
+
+Output
+
+```bash
+Trying "hello.default.svc.cluster.local"
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12359
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;hello.default.svc.cluster.local. IN	A
+
+;; ANSWER SECTION:
+hello.default.svc.cluster.local. 30 IN	A	10.99.200.108
+
+Received 96 bytes from 10.96.0.10#53 in 0 ms
+```
+
+Resolve Hello Headless service
+```bash
+kubectl exec -it dnsutils -- host -v -t a hello-headless
+
+Trying "hello-headless.default.svc.cluster.local"
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 28887
+;; flags: qr aa rd; QUERY: 1, ANSWER: 7, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;hello-headless.default.svc.cluster.local. IN A
+
+;; ANSWER SECTION:
+hello-headless.default.svc.cluster.local. 30 IN	A 10.244.0.7
+hello-headless.default.svc.cluster.local. 30 IN	A 10.244.0.8
+hello-headless.default.svc.cluster.local. 30 IN	A 10.244.0.6
+hello-headless.default.svc.cluster.local. 30 IN	A 10.244.0.4
+hello-headless.default.svc.cluster.local. 30 IN	A 10.244.0.5
+hello-headless.default.svc.cluster.local. 30 IN	A 10.244.0.9
+hello-headless.default.svc.cluster.local. 30 IN	A 10.244.0.10
+```
+
+
+Resolve google.com
+```bash
+kubectl exec -it dnsutils -- host -v -t a google.com
+```
+
+Output
+
+```bash
+Trying "google.com.default.svc.cluster.local"
+Trying "google.com.svc.cluster.local"
+Trying "google.com.cluster.local"
+Trying "google.com"
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 47222
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;google.com.			IN	A
+
+;; ANSWER SECTION:
+google.com.		8	IN	A	216.58.193.142
+
+Received 54 bytes from 10.96.0.10#53 in 0 ms
+```
+
+Add autopath @kubernetes and pods verified to the coredns configmap 
+```bash
+kubectl edit configmap coredns -n kube-system
+```
+
+Add the two highlight lines 
+```yaml
+.:53 {
+    errors
+    health
+    ready
+    kubernetes cluster.local in-addr.arpa ip6.arpa {
+*       pods verified
+       fallthrough in-addr.arpa ip6.arpa
+       ttl 30
+    }
+*    autopath @kubernetes
+    prometheus :9153
+    forward . /etc/resolv.conf
+    cache 30
+    loop
+    reload
+    loadbalance
+}
+```
+
+Redeploy the dnsutil image
+
+```bash
+kubectl delete po dnsutils
+kubectl apply -f dnsutils
+```
+
+Resolve google.com again
+```bash
+kubectl exec -it dnsutils -- host -v -t a google.com
+```
+
+Output
+
+```bash
+Trying "google.com.default.svc.cluster.local"
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 52185
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;google.com.default.svc.cluster.local. IN A
+
+;; ANSWER SECTION:
+google.com.default.svc.cluster.local. 30 IN CNAME google.com.
+google.com.		30	IN	A	216.58.193.142
+
+Received 140 bytes from 10.96.0.10#53 in 2 ms
+```
+
 # Failure modes 
 
 ### /etc/resolv.conf
@@ -144,6 +291,8 @@ https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/#kn
 
 [Memory Limits and requests](https://github.com/coredns/deployment/blob/master/kubernetes/coredns.yaml.sed#L117) 
 
+Default deployment memory requests and limits 
+
 ```yaml
         resources:
           limits:
@@ -152,6 +301,13 @@ https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/#kn
             cpu: 100m
             memory: 70Mi
 ```
+
+View the current deployments memory limits and requests
+
+```bash
+kubectl get pods -l k8s-app=kube-dns -n kube-system -o=jsonpath="{range .items[*]}[{.metadata.name}, {.spec.containers[*].resources.limits.memory},{.spec.containers[*].resources.requests.memory} ] {end}"
+```
+
 
 Autoscaler 
 
@@ -207,6 +363,12 @@ is having trouble keeping up with its query load.
 Ensure that your CoreDNS deployment has the priority class set 
 
 [It is set in the default deployment yaml](https://github.com/coredns/deployment/blob/master/kubernetes/coredns.yaml.sed#L96)
+
+Verify Priority Class Name 
+
+```bash
+kubectl get pods -l k8s-app=kube-dns -n kube-system -o=jsonpath="{range .items[*]}[{.metadata.name},{.spec.priorityClassName} ] {end}"
+```
 
 ### CoreDNS Plugins
 
@@ -277,6 +439,24 @@ Corefile:
 }
 
 Events:  <none>
+```
+
+Make sure to delete this cluster
+
+```bash
+eksctl delete cluster --name test-cluster
+[ℹ]  eksctl version 0.12.0
+[ℹ]  using region us-west-2
+[ℹ]  deleting EKS cluster "test-cluster"
+[ℹ]  account is not authorized to use Fargate. Ignoring error
+[✔]  kubeconfig has been updated
+[ℹ]  cleaning up LoadBalancer services
+[ℹ]  2 sequential tasks: { delete nodegroup "ng-d4923ffb", delete cluster control plane "test-cluster" [async] }
+[ℹ]  will delete stack "eksctl-test-cluster-nodegroup-ng-d4923ffb"
+[ℹ]  waiting for stack "eksctl-test-cluster-nodegroup-ng-d4923ffb" to get deleted
+[ℹ]  will delete stack "eksctl-test-cluster-cluster"
+[✔]  all cluster resources were deleted
+
 ```
             
 # Resources
