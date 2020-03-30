@@ -1,51 +1,61 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: postgres
+  labels:
+    app: postgres
 spec:
   ports:
-    - port: 3306
+    - port: 5432
+      name: postgres
   selector:
-    app: mysql
+    app: postgres
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: testpostgresdb
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: mysecretpassword
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql
+  name: postgres
 spec:
+  serviceName: "postgres"
+  replicas: 1
   selector:
     matchLabels:
-      app: mysql
-  serviceName: "mysql"
-  replicas: 3
+      app: postgres
   template:
     metadata:
       labels:
-        app: mysql
+        app: postgres
     spec:
-      terminationGracePeriodSeconds: 10
       containers:
-        - image: mysql:5.6
-          name: mysql
-          env:
-            # Use secret in real usage
-            - name: MYSQL_ROOT_PASSWORD
-              value: password
+        - name: postgres
+          image: postgres:12.2
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           ports:
-            - containerPort: 3306
-              name: mysql
+            - containerPort: 5432
+              name: postgredb
           volumeMounts:
-            - name: mysql-persistent-storage
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: mysql-persistent-storage
-          persistentVolumeClaim:
-            claimName: mysql-pv-claim
+            - name: postgredb
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
   volumeClaimTemplates:
     - metadata:
-        name: mysql-persistent-storage
+        name: postgredb
       spec:
         accessModes: [ "ReadWriteOnce" ]
+        storageClassName: gp2
         resources:
           requests:
             storage: 1Gi

@@ -4,7 +4,13 @@ metadata:
   name: app
 spec:
   ports:
-    - port: 8080
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: admin
+  - port: 8090
+    protocol: TCP
+    name: app
   selector:
     app: app
 ---
@@ -16,7 +22,7 @@ spec:
   selector:
     matchLabels:
       app: app
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -24,16 +30,17 @@ spec:
     spec:
       containers:
         - name: app
-          image: strongjz/golang_example:0.0.1
+          image: strongjz/golang_example:0.0.2
           ports:
             - containerPort: 8080
+            - containerPort: 8090
           env:
             - name: DB_HOST
-              value: "mysql"
+              value: "postgres"
             - name: DB_USER
-              value: "root"
+              value: "postgres"
             - name: DB_PASSWORD
-              value: "password"
+              value: "mysecretpassword"
             - name: DB_PORT
-              value: "3306"
+              value: "5432"
 

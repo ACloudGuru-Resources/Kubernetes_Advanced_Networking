@@ -6,7 +6,7 @@ spec:
   endpointSelector:
     matchLabels:
       app: app
-  egress:
+  ingress:
     - toPorts:
         - ports:
             - port: "8080"

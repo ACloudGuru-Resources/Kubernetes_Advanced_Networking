@@ -1,12 +1,13 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "l3-rule"
+  name: "l3-rule-app-to-db"
 spec:
   endpointSelector:
     matchLabels:
-      role: mysql
+      app: postgres
   ingress:
     - fromEndpoints:
         - matchLabels:
-            role: app
+            app: app
+---
