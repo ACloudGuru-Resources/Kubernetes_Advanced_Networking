@@ -45,7 +45,7 @@ More details [here](https://github.com/gliderlabs/docker-alpine/blob/master/docs
 1. Verify the /etc/resolv.conf 
 
 ```bash
-kubectl exec dnsutils cat /etc/resolv.conf
+kubectl exec -it dnsutils -- cat /etc/resolv.conf
 ```
 Output 
 ```bash
