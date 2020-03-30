@@ -106,14 +106,14 @@ sent 0, rcvd 0
 Test connectivity to App API ping 
 
 ```bash
-kubectl exec -it dnsutils -- wget -qO- app:8080/ping
+kubectl exec -it dnsutils -- wget -qO- app:80/ping
 {"message":"pong"}
 ```
 
 Test connectivity to App API secret 
 
 ```bash
-kubectl exec -it dnsutils -- wget -qO- app:8080/secret
+kubectl exec -it dnsutils -- wget -qO- app:80/secret
 {"message":"You should not see this"} 
 ```
 
@@ -127,7 +127,7 @@ sent 0, rcvd 0
 
 Test connection to App to Database
 ```bash
-kubectl exec -it dnsutils -- wget -qO- app:8080/data
+kubectl exec -it dnsutils -- wget -qO- app:80/data
 {"message":"Database Connected"}
 ```
 
