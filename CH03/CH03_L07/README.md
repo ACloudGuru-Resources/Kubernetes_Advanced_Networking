@@ -468,3 +468,5 @@ eksctl delete cluster --name test-cluster
 * [K8s.io debugging DNS](https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/)
 * [K8s.io Guaranteeing Critical pods](https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/)
 * [k8s.io Node OOM Behavior](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#node-oom-behavior)
+* [EKS DNS at scale and spikeiness](https://aws.amazon.com/blogs/containers/eks-dns-at-scale-and-spikeiness/)
+* [CoreDNS Graphana Dashboards](https://grafana.com/grafana/dashboards/7279)
