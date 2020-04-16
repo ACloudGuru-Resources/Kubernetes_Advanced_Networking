@@ -103,7 +103,7 @@ deployment.apps/curl2 created
 4. Deploy lab services 
 
 ```bash
-kubectl apply echo-service.yml 
+kubectl apply -f echo-service.yml 
 ```
 ```bash
 ± |master {1} S:5 U:4 ?:1 ✗| → kubectl apply -f echo-service.yml
