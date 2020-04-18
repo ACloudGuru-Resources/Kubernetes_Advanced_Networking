@@ -5,7 +5,7 @@ metadata:
     app: app1
   name: app1
 spec:
-  replicas: 1
+  replicas: 7
   selector:
     matchLabels:
       app: app1
@@ -18,7 +18,7 @@ spec:
         - name: app1
           image: strongjz/golang_example:0.0.4
           ports:
-          - containerPort: 8080
+            - containerPort: 8080
           env:
             - name: MY_NODE_NAME
               valueFrom:
@@ -40,21 +40,15 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.serviceAccountName
-      nodeSelector:
-        kubernetes.io/hostname: nodeport-worker
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodeport-service
+  app: clusterip-service
 spec:
   selector:
     app: app1
-  type: NodePort
   ports:
-    - name: echo
-      port: 8080
-      targetPort: 8080
-      nodePort: 30040
-      protocol: TCP
-
+  - protocol: TCP
+    port: 80
+    targetPort: http

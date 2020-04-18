@@ -17,14 +17,11 @@ Advanced Networking with Kubernetes on AWS
 
 ### Chapter 4 Accessing the Cluster Network
 - [Ch04_L03 - Services NodePort](CH04/CH04_L03) 
-- [Ch04_L04 - Services LoadBalancers](CH04/CH04_L04) 
-- [Ch04_L06 - Ingress Controllers](CH04/CH04_L06) 
-- [Ch04_L07 - Ingress Rules](CH04/CH04_L07) 
+- [Ch04_L04 - Services Expanded](CH04/CH04_L04) 
+- [Ch04_L05 - Ingress Controllers and Rules](CH04/CH04_L05) 
+- [Ch04_L06 - Services Load Balancers](CH04/CH04_L06) 
 
-### Chapter 5 AWS Networking and Kubernetes
-- [Ch05_L01 - AWS Networking basics review](CH05/CH05_L01) 
-- [Ch05_L02 - AWS CNI](CH05/CH05_L02) 
-- [Ch05_L03 - Deploy AWS EKS Cluster](CH05/CH05_L03) 
+### Chapter 5 AWS Networking and Kubernetes 
 - [Ch05_L04 - AWS ALB Ingress Controller](CH05/CH05_L04) 
 - [Ch05_L05 - AWS App Mesh](CH05/CH05_L05) 
 
