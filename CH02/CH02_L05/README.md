@@ -1,14 +1,15 @@
-# Container connectivity 
+# Container connectivity
 
 ### Objectives
+
 1. Deploy kind cluster  
-2. Understand iptables role in connectivity 
+2. Understand iptables role in connectivity
 3. Investigate services and pods connectivity
 4. Inspect network primitives and map them to pods
 
-![](container_connectivity.png)
+![Container Connectivity](container_connectivity.png)
 
-### Linux commands 
+### Linux commands
 
 * [ip netns](http://man7.org/linux/man-pages/man8/ip-netns.8.html)
 * [ip](http://man7.org/linux/man-pages/man8/ip.8.html)
@@ -25,8 +26,9 @@
 1. Check to make sure docker is running
 
 ```bash
-docker version 
+docker version
 ```
+
 ```bash
  2020-03-06 19:13:25 ⌚  strongjz-macbook in ~
    ○ → docker version
@@ -38,7 +40,6 @@ docker version
     Built:             Wed Nov 13 07:22:34 2019
     OS/Arch:           darwin/amd64
     Experimental:      false
-   
    Server: Docker Engine - Community
     Engine:
      Version:          19.03.5
@@ -59,11 +60,12 @@ docker version
      GitCommit:        fec3683
 ```
 
-2. Start kind cluster 
+2. Start kind cluster
 
 ```bash
 kind create cluster --config kind.yml --name iptables
 ```
+
 ```bash
 ± |master {1} S:5 U:4 ?:1 ✗| → kind create cluster --config kind.config --name iptables
 Creating cluster "iptables" ...
@@ -84,12 +86,14 @@ Have a nice day! 👋
 
 3. Deploy lab pods
 
-```bash 
+```bash
 kubectl apply -f curl1.yml
 ```
+
 ```bash
 kubectl apply -f curl2.yml
 ```
+
 ```bash
  2020-03-06 19:01:52 ⌚  strongjz-macbook in ~/Documents/code/acg_ad_net_k8_aws_presentation/CH02/CH02_LC05
 ± |master {1} S:5 U:4 ?:1 ✗| → kubectl apply -f curl1.yml
@@ -98,13 +102,14 @@ deployment.apps/curl1 created
  2020-03-06 19:02:02 ⌚  strongjz-macbook in ~/Documents/code/acg_ad_net_k8_aws_presentation/CH02/CH02_LC05
 ± |master {1} S:5 U:4 ?:1 ✗| → kubectl apply -f curl2.yml
 deployment.apps/curl2 created
-
 ```
-4. Deploy lab services 
+
+4. Deploy lab services
 
 ```bash
-kubectl apply -f echo-service.yml 
+kubectl apply -f echo-service.yml
 ```
+
 ```bash
 ± |master {1} S:5 U:4 ?:1 ✗| → kubectl apply -f echo-service.yml
 deployment.apps/echo unchanged
@@ -112,7 +117,8 @@ service/echo-service created
 ```
 
 5. Verify Pods and services are up and running
-```bash 
+
+```bash
 kubectl get pods,svc,ep
 ```
 
@@ -135,20 +141,21 @@ endpoints/kubernetes     172.17.0.4:6443                                   19m
 
 ```
 
-### Inspection 
+### Inspection
 
 * View veth pair and match with pod
 * View network namespace and match with pod
 * Verify pids on node match pods
 * Match services with iptables rules
 
-1. View the bridge and veths for the pods on the node 
+1. View the bridge and veths for the pods on the node
 
-Get the nodes the pod are on 
+Get the nodes the pod are on
 
 ```bash
 kubectl get pods -o wide
 ```
+
 ```bash
  2020-03-06 20:10:46 ⌚  strongjz-macbook in ~
 ○ → kubectl get pods -o wide
@@ -160,9 +167,9 @@ echo-669c78484d-ps5v5    1/1     Running   0          35m   10.244.1.2   iptable
 echo-669c78484d-vkpt9    1/1     Running   0          35m   10.244.3.2   iptables-worker2   <none>           <none>
 ```
 
-Pod curl1-647585685b-5pdj4 is running on node iptables-worker3 
+Pod curl1-647585685b-5pdj4 is running on node iptables-worker3
 
-2. Pick the kind worker node 
+2. Pick the kind worker node
 
 ```bash
 docker ps
@@ -222,6 +229,7 @@ On the curl pod also exec  ip a
 ```bash
 kubectl exec -it curl1-647585685b-5pdj4 ip a
 ```
+
 ```bash
 2020-03-06 20:17:45 ⌚  strongjz-macbook in ~
 ○ → kubectl exec -it curl1-647585685b-5pdj4 ip a
@@ -243,7 +251,8 @@ kubectl exec -it curl1-647585685b-5pdj4 ip a
      valid_lft forever preferred_lft forever
 
 ```
-On the Curl pod the interface for eth0 is connected to our veth pair and bridge, in this case that is interface 5 
+
+On the Curl pod the interface for eth0 is connected to our veth pair and bridge, in this case that is interface 5
 
 ```bash
 5: eth0@if4: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue
@@ -252,14 +261,15 @@ On the Curl pod the interface for eth0 is connected to our veth pair and bridge,
      valid_lft forever preferred_lft forever
   inet6 fe80::6c13:e8ff:fe42:bb13/64 scope link
      valid_lft forever preferred_lft forever
-```     
-
-It also hints at where the interface is located on the kind worker node 
 ```
+
+It also hints at where the interface is located on the kind worker node
+
+```bash
 eth0@if4
 ```
 
-This tells us that it's connected to the veth interface 4 on the kind worker node 
+This tells us that it's connected to the veth interface 4 on the kind worker node
 
 From the node ip a
 
@@ -270,15 +280,15 @@ From the node ip a
       valid_lft forever preferred_lft forever
 ```
 
-That matches the interface 5 on the pod 
+That matches the interface 5 on the pod
 
-Let's check the Network namespace as well, from the node ip a output 
+Let's check the Network namespace as well, from the node ip a output
 
 ```bash
 cni-82a7f4a5-ab4a-1a0e-b76c-31be43b08bde
 ```
 
-4. List out the Network namespaces on the node 
+4. List out the Network namespaces on the node
 
 ```bash
 docker exec -it iptables-worker3 /usr/sbin/ip netns list
@@ -292,18 +302,18 @@ cni-727b1199-66da-2c59-d337-f683b3ce8fcd (id: 2)
 cni-82a7f4a5-ab4a-1a0e-b76c-31be43b08bde (id: 1)
 ```
 
-Let's see what process/es run inside that network namespace 
+Let's see what process/es run inside that network namespace
 
 ```bash
 docker exec -it iptables-worker3 /usr/sbin/ip netns pid cni-727b1199-66da-2c59-d337-f683b3ce8fcd
 ```
+
 ```bash
  2020-03-06 20:29:12 ⌚  strongjz-macbook in ~/Documents/code/acg_ad_net_k8_aws_presentation/CH02/CH02_LC05
 ± |master {1} S:5 U:4 ?:1 ✗| → docker exec -it iptables-worker3 /usr/sbin/ip netns pid cni-727b1199-66da-2c59-d337-f683b3ce8fcd
 2677
 2907
 2919
-
 ```
 
 Let's grep for each process id
@@ -324,14 +334,15 @@ root      2919  0.0  0.0   3160   184 ?        S    00:41   0:00 sleep 3600
 
 We have the pause container, and the two processes running inside the curl container, echo and sleep
 
-5. Inspecting iptables 
+5. Inspecting iptables
 
 View the iptables on the kind worker node
+
 ```bash
 docker exec -it iptables-worker3 iptables -L
 ```
 
-```
+```bash
 ± |master {1} S:5 U:4 ?:1 ✗| → docker exec -it iptables-worker3 iptables -L
 Chain INPUT (policy ACCEPT)
 target     prot opt source               destination
@@ -372,6 +383,7 @@ Retrieve the Cluster IP of the echo service
 ```bash
 kubectl get svc
 ```
+
 ```bash
  2020-03-06 19:59:46 ⌚  strongjz-macbook in ~
 ○ → kubectl get svc
@@ -380,11 +392,12 @@ echo-service   ClusterIP   10.102.117.8   <none>        80/TCP    22m
 kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP   41m
 ```
 
-Now use the cluster ip of the service to find our iptables rule. 
+Now use the cluster ip of the service to find our iptables rule.
 
 ```bash
 docker exec -it iptables-worker3 iptables -L -t nat | grep 10.102.117.8
 ```
+
 ```bash
  2020-03-06 20:33:34 ⌚  strongjz-macbook in ~/Documents/code/acg_ad_net_k8_aws_presentation/CH02/CH02_LC05
 ± |master {1} S:5 U:4 ?:1 ✗| → docker exec -it iptables-worker3 iptables -L -t nat | grep 10.102.117.8
@@ -414,6 +427,7 @@ All of the endpoints for the services are map to these chains
 * KUBE-SEP-NXPMRYPPF5OQRY2M
 
 Now we can see what the rules for this chain are
+
 ```bash
 docker exec -it iptables-worker3 iptables -L KUBE-SEP-U2LTPJXAZEM2OQET -t nat
 ```
@@ -444,6 +458,3 @@ Subsets:
 
 Events:  <none>
 ```
-
-
-

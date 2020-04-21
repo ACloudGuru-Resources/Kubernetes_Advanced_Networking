@@ -1,18 +1,22 @@
 # Lab Name
 
 ### Objectives
+
 1. Deploy Nodeport
-2. Understand the drawbacks of using Nodeport Service Type 
+2. Understand the drawbacks of using Nodeport Service Type
 
 ### Prereq
+
 1. Running Kind cluster
 
 ### Setup Steps
-1. Start kind cluster 
+
+1. Start kind cluster
 
 ```bash
 kind create cluster --config ./kind.yml --name nodeport
 ```
+
 ```bash
 ± |master {1} S:5 U:4 ?:1 ✗| → kind create cluster --config kind.config --name nodeport
 Creating cluster "nodeport" ...
@@ -31,7 +35,7 @@ kubectl cluster-info --context kind-nodeport
 Have a nice day! 👋
 ```
 
-2. Check Node Labels 
+2. Check Node Labels
 
 ```bash
 kubectl get nodes --show-labels
@@ -46,11 +50,12 @@ nodeport-worker2         Ready    <none>   87s    v1.16.3   beta.kubernetes.io/a
 nodeport-worker3         Ready    <none>   87s    v1.16.3   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/arch=amd64,kubernetes.io/hostname=nodeport-worker3,kubernetes.io/os=linux
 ```
 
-Get the IP address of node-worker 
+Get the IP address of node-worker
 
 ```bash
 kubectl get nodes -o wide
 ```
+
 ```bash
 NAME                     STATUS   ROLES    AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                                  KERNEL-VERSION     CONTAINER-RUNTIME
 nodeport-control-plane   Ready    master   36m   v1.16.3   172.17.0.5    <none>        Ubuntu Eoan Ermine (development branch)   4.19.76-linuxkit   containerd://1.3.0-27-g54658b88
@@ -59,7 +64,7 @@ nodeport-worker2         Ready    <none>   35m   v1.16.3   172.17.0.6    <none> 
 nodeport-worker3         Ready    <none>   35m   v1.16.3   172.17.0.4    <none>        Ubuntu Eoan Ermine (development branch)   4.19.76-linuxkit   containerd://1.3.0-27-g54658b88
 ```
 
-3. Deploy Service 
+3. Deploy Service
 
 kubectl apply -f nodeport-service.yml
 
@@ -68,10 +73,10 @@ kubectl apply -f nodeport-service.yml
 4.1 Deploy our trusted DNS utils pod
 
 ```bash
-kubectl apply -f dnsutils.yml 
+kubectl apply -f dnsutils.yml
 ```
 
-4.2 Get the IP address of any node other than the one we labeled 
+4.2 Get the IP address of any node other than the one we labeled
 
 ```bash
 kubectl get nodes -o wide
@@ -87,7 +92,7 @@ nodeport-worker3         Ready    <none>   35m   v1.16.3   172.17.0.4    <none> 
 
 4.3 Test Connectivity
 
-External Communcation uses the nodeport 
+External Communcation uses the nodeport
 
 ```bash
 kubectl exec -it dnsutils -- wget -q -O- 172.17.0.3:30040/host
@@ -100,7 +105,7 @@ kubectl exec -it dnsutils -- wget -q -O-  172.17.0.6:30040/host
 {"message":"NODE: nodeport-worker, POD IP:10.244.1.9"}
 ```
 
-Internal Cluster Communication uses the port 
+Internal Cluster Communication uses the port
 
 ```bash
 kubectl exec -it dnsutils -- wget -q -O- 10.244.1.9:8080/host
@@ -110,9 +115,9 @@ kubectl exec -it dnsutils -- wget -q -O- nodeport-service.default.svc.cluster.lo
 {"message":"NODE: nodeport-worker, POD IP:10.244.1.9"}
 ```
 
-4.4 Review IP tables rules 
+4.4 Review IP tables rules
 
-There is an IPtables rule on 
+There is an IPtables rule on
 
 ```bash
 docker exec -it nodeport-worker3 iptables -L -t nat | grep nodeport-service
@@ -148,13 +153,12 @@ You can see that it Destination NAT to the pod ip 10.244.1.9
 ```bash
 docker exec -it nodeport-worker3 iptables -L KUBE-SVC-SR75RJIBNEHN2H65 -t nat
 Chain KUBE-SVC-SR75RJIBNEHN2H65 (2 references)
-target     prot opt source               destination         
-KUBE-SEP-ZGBSGCBJNGMY3BBA  all  --  anywhere             anywhere            
+target     prot opt source               destination
+KUBE-SEP-ZGBSGCBJNGMY3BBA  all  --  anywhere             anywhere
 
 docker exec -it nodeport-worker3 iptables -L KUBE-SEP-ZGBSGCBJNGMY3BBA -t nat
 Chain KUBE-SEP-ZGBSGCBJNGMY3BBA (1 references)
-target     prot opt source               destination         
-KUBE-MARK-MASQ  all  --  10.244.1.9           anywhere            
+target     prot opt source               destination
+KUBE-MARK-MASQ  all  --  10.244.1.9           anywhere
 DNAT       tcp  --  anywhere             anywhere             tcp to:10.244.1.9:8080
 ```
-
