@@ -4,16 +4,16 @@
 
 Install the list of tools below
 
-1.	VirtualBox
-2.	Docker
-3.	kubectl
-4.	KIND (Kubernetes in Docker)
-5.	aws cli
-6.	eksctl
+1. VirtualBox
+2. Docker
+3. kubectl
+4. KIND (Kubernetes in Docker)
+5. aws cli
+6. eksctl
 
-##	[VirtualBox](https://www.virtualbox.org/)
+## [VirtualBox](https://www.virtualbox.org/)
 
-VirtualBox is a general-purpose full virtualization for x86 hardware. 
+VirtualBox is a general-purpose full virtualization for x86 hardware.
 
 #### 1. PreReq
 
@@ -25,21 +25,17 @@ https://www.virtualbox.org/manual/UserManual.html#hostossupport
 
 CLI example on Mac
 
-`
+```bash
 sysctl -a | grep -E --color 'machdep.cpu.features|VMX'
-`
+```
 
 #### 2. Download
 
-Download and install Virtualbox for your Operating System
-
-https://www.virtualbox.org/wiki/Downloads
+[Download](https://www.virtualbox.org/wiki/Downloads) and install Virtualbox for your Operating System
 
 #### 3. Install
 
-Installation details 
-
-https://www.virtualbox.org/manual/UserManual.html#installation
+[Installation details](https://www.virtualbox.org/manual/UserManual.html#installation)
 
 #### 4. Verify
 
@@ -51,7 +47,7 @@ There are many options when working with Virtualbox
 - [OS Boxes](https://www.osboxes.org/virtualbox-images/)
 - Manual - Download a copy of an OS and [run through creating your first VM](https://www.virtualbox.org/manual/UserManual.html#intro-running)
 
-##	[Docker](https://docs.docker.com/install/)
+## [Docker](https://docs.docker.com/install/)
 
 Docker is an open source container runtime
 
@@ -59,7 +55,6 @@ Docker is an open source container runtime
 
 - [Docker Hub account](https://hub.docker.com/sso/start)
 - See the install for system requirements for your operating system.
-
 
 #### 2. Download
 Download Docker for your operating system
@@ -120,14 +115,14 @@ https://kind.sigs.k8s.io/docs/user/quick-start
 
 `kind create cluster`
 
-##	[aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
+## [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
 
 AWS CLI is one of the ways to programmatically access your AWS resources. 
 
 #### 1. PreReq
 
 - Python
- 
+
 #### 2. Download
 
 See Install
@@ -145,11 +140,11 @@ See Install
 
 ##	[eksctl](https://eksctl.io/)
 
-eksctl is a CLI tool created by weave to help manage kubernetes clusters on AWS easily. 
+eksctl is a CLI tool created by weave to help manage kubernetes clusters on AWS easily.
 
 #### 1. PreReq
 
-- AWS CLI 
+- AWS CLI
 
 #### 2. Download
 
@@ -172,16 +167,16 @@ A cluster will be created with default parameters
 - use official AWS EKS AMI
 - us-west-2 region
 - dedicated VPC (check your quotas)
--  using static AMI resolver
+- using static AMI resolver
 
 Lets go ahead and delete that cluster
 
-`eksctl delete cluster --name CLUSTERNAME` 
+`eksctl delete cluster --name CLUSTERNAME`
 
-### [Network Troubleshooting image](https://github.com/strongjz/netshoot?organization=strongjz&organization=strongjz) 
+### [Network Troubleshooting image](https://github.com/strongjz/netshoot?organization=strongjz&organization=strongjz)
 
-Troubleshooting applications pods can be difficult from outside the cluster, running a container with troubleshooting tools 
-inside the cluster can be helpful. 
+Troubleshooting applications pods can be difficult from outside the cluster, running a container with troubleshooting tools
+inside the cluster can be helpful.
 
 #### 1. PreReq
 
@@ -191,20 +186,20 @@ inside the cluster can be helpful.
 
 Build it yourself, Dockerfile is located in this [repo here](https://github.com/strongjz/netshoot?organization=strongjz&organization=strongjz)
 
-OR 
+OR
 
 `docker pull acloudgurulabs/course_kubernetes_advanced_networking:latest`
 
-<INSERT IMAGE HERE> 
-
 #### 3. Install
 
+```bash
 kubectl run --generator=run-pod/v1 tmp-shell --rm -i --tty --image acloudgurulabs/course_kubernetes_advanced_networking:latest -- /bin/bash
+```
 
 #### 4. Verify
 
 The Kubectl run should drop you into a shell
 
-<INSERT IMAGE HERE> 
-
-`ping google.com`
+```bash
+ping google.com
+```

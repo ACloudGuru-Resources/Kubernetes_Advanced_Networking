@@ -17,7 +17,7 @@ If the cluster from Lecture 4 is not running, walk through the Deployment from [
  
 ### 2. Deploy DNS utils images
 
-Useful docker images that can be deployed to aide in troubleshooting dns issues 
+Useful docker images that can be deployed to aid in troubleshooting dns issues 
 
 ```bash 
 kubectl run --restart=Never -it --image  infoblox/dnstools dnstools 

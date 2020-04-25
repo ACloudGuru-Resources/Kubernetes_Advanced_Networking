@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: app1
-  name: app1
+  name: app
 spec:
   replicas: 7
   selector:
@@ -44,11 +44,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  app: clusterip-service
+  name: clusterip-service
+  labels:
+    app: app1
 spec:
   selector:
     app: app1
   ports:
   - protocol: TCP
     port: 80
-    targetPort: http
+    targetPort: 8080
