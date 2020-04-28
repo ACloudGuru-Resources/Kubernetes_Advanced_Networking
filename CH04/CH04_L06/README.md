@@ -239,3 +239,11 @@ wget -qO- a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazon
 {"message":"Admin Sections"} 
 ```
 
+Clean Up
+
+Make sure to delete the Ingress Resource since it creates AWS Resources
+
+```bash
+kubectl delete -f nginx-ingress-controller.yml
+```
+
