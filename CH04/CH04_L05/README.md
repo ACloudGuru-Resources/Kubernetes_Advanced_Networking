@@ -192,7 +192,7 @@ aws elb describe-load-balancers --name a08ca5d40873a11eaa1d606b2a3d6519
                 "HealthyThreshold": 2
             },
             "SourceSecurityGroup": {
-                "OwnerAlias": "725406136353",
+                "OwnerAlias": "363534682973",
                 "GroupName": "k8s-elb-a08ca5d40873a11eaa1d606b2a3d6519"
             },
             "SecurityGroups": [

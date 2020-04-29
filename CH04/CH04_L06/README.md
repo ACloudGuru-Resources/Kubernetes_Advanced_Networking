@@ -39,7 +39,7 @@ eksctl create cluster -N 3
 [ℹ]  deploying stack "eksctl-attractive-sculpture-1587846638-nodegroup-ng-e7e094a6"
 [✔]  all EKS cluster resources for "attractive-sculpture-1587846638" have been created
 [✔]  saved kubeconfig as "/Users/strongjz/.kube/config"
-[ℹ]  adding identity "arn:aws:iam::725406136353:role/eksctl-attractive-sculpture-15878-NodeInstanceRole-8VILH6IFQH5S" to auth ConfigMap
+[ℹ]  adding identity "arn:aws:iam::363534682973:role/eksctl-attractive-sculpture-15878-NodeInstanceRole-8VILH6IFQH5S" to auth ConfigMap
 [ℹ]  nodegroup "ng-e7e094a6" has 0 node(s)
 [ℹ]  waiting for at least 3 node(s) to become ready in "ng-e7e094a6"
 [ℹ]  nodegroup "ng-e7e094a6" has 3 node(s)

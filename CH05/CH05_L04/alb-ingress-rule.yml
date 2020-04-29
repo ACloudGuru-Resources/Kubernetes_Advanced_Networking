@@ -1,24 +1,25 @@
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: app
-  namespace: app
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
+    kubernetes.io/ingress.class: alb
+  name: app
 spec:
   rules:
-      - http:
+    -
+      http:
         paths:
           - path: /ping
             backend:
-              serviceName: ping
-              servicePort: 80
-          - path: /admin
-            backend:
-              serviceName: ping
+              serviceName: ping-service
               servicePort: 80
           - path: /data
             backend:
-              serviceName: ping
+              serviceName: data-service
               servicePort: 80
+          - path: /admin
+            backend:
+              serviceName: admin-service
+              servicePort: 8090
