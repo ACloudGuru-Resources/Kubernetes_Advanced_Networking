@@ -66,7 +66,9 @@ nodeport-worker3         Ready    <none>   35m   v1.16.3   172.17.0.4    <none> 
 
 3. Deploy Service
 
+```bash
 kubectl apply -f nodeport-service.yml
+```
 
 4. Let's Investigate
 
