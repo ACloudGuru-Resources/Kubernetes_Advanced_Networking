@@ -1,4 +1,4 @@
-# Lab Name
+# Nodeport Service Lab
 
 ### Objectives
 
