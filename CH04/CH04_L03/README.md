@@ -78,7 +78,13 @@ kubectl apply -f nodeport-service.yml
 kubectl apply -f dnsutils.yml
 ```
 
-4.2 Get the IP address of any node other than the one we labeled
+4.2 Get the IP address of any node other than noae-worker
+
+We used node selector on the deployment to force our pod to nodeport-worker
+
+      nodeSelector:
+        kubernetes.io/hostname: nodeport-worker
+
 
 ```bash
 kubectl get nodes -o wide
