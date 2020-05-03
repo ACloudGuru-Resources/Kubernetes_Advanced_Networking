@@ -47,7 +47,7 @@ dnsutils is used for [kubernetes end to end testing](https://github.com/kubernet
 kubectl apply -f dnsutils.yml 
 ```
 
-### Deploy Services 
+### 3. Deploy Services 
 
 You can deploy one by one or all together 
 
@@ -146,7 +146,7 @@ Received 152 bytes from 10.96.0.10#53 in 15 ms
 ```
 
 
-### 4 Explore Services
+### 4. Explore Services
 
 Let's Debug one of the pods from the Service 
 
