@@ -5,7 +5,7 @@
 ### Objectives
 1. Deploy EKS Cluster
 2. Deploy Services 
-3. Deploy Ingress
+3. Deploy Nginx Ingress Controller
 4. Setup ingress rules 
 5. Test
 
@@ -18,6 +18,8 @@
 
 ```bash
 eksctl create cluster -N 3
+```
+```bash
 [ℹ]  eksctl version 0.12.0
 [ℹ]  using region us-west-2
 [ℹ]  setting availability zones to [us-west-2c us-west-2d us-west-2b]
@@ -68,33 +70,32 @@ service/admin-service configured
 Backing applications pods for Services
 
 ```bash
-kubectl apply -f app.yml
+kubectl apply -f app.yml,database.yml
 ```
 ```bash
-deployment.apps/ping unchanged
-deployment.apps/data unchanged
-deployment.apps/admin unchanged
+service/app-test-service created
+deployment.apps/app created
+service/postgres created
+configmap/postgres-config created
+statefulset.apps/postgres created
 ```
 
 Verify that services are working 
 
 ```bash 
-kc exec -it dnsutils -- wget -qO- ping-service/host
+kubectl exec -it dnsutils -- wget -qO- ping-service/host
 {"message":"NODE: ip-192-168-13-117.us-west-2.compute.internal, POD IP:192.168.30.127"}
 
-kc exec -it dnsutils -- wget -qO- ping-service/ping
+kubectl exec -it dnsutils -- wget -qO- ping-service/ping
 {"message":"pong"}
 
-kc exec -it dnsutils -- wget -qO- data-service/data
+kubectl exec -it dnsutils -- wget -qO- data-service/data
 {"message":"Database Connected"}
 
-kc exec -it dnsutils -- wget -qO- data-service/host
+kubectl exec -it dnsutils -- wget -qO- data-service/host
 {"message":"NODE: ip-192-168-81-157.us-west-2.compute.internal, POD IP:192.168.83.48"}
 
-kc exec -it dnsutils -- wget -qO- admin-service:8090/admin
-{"message":"Admin Sections"}
-
-kc exec -it dnsutils -- wget -qO- admin-service/host
+kubectl exec -it dnsutils -- wget -qO- admin-service/host
 {"message":"NODE: ip-192-168-36-240.us-west-2.compute.internal, POD IP:192.168.42.253"}
 ```
 
@@ -134,13 +135,13 @@ Let's Review what it is deploying
 - Service: Cluster IP
 - Service: LoadBalancer
 - Deployment: ingress-nginx-controller
-- ValidatingWebhookConfiguration: ingress-nginx-admission 
 - ClusterRole: ingress-nginx
 - ClusterRoleBinding: ingress-nginx
-- Job: ingress-nginx-admission-create
-- Job: ingress-nginx-admission-patch
 - Role: ingress-nginx-admission
 - RoleBinding: ingress-nginx-admission
+- Job: ingress-nginx-admission-create
+- Job: ingress-nginx-admission-patch
+- ValidatingWebhookConfiguration: ingress-nginx-admission 
 
 Let's Verify that everything is up and running 
 
@@ -186,8 +187,8 @@ Output
       Host        Path  Backends
       ----        ----  --------
       *
-                  /ping   ping-service:8080 (<error: endpoints "ping-service" not found>)
-                  /data   data-service:8080 (<error: endpoints "data-service" not found>)
+                  /ping   ping-service:8080 
+                  /data   data-service:8080
     Annotations:  kubernetes.io/ingress.class: nginx
                   nginx.ingress.kubernetes.io/ssl-redirect: false
     Events:
@@ -205,47 +206,42 @@ NAME               HOSTS   ADDRESS                                              
 ingress-resource   *       a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazonaws.com   80      33m
 ```
 
-
-
 Ping Service
+
 ```bash
 wget -qO- a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazonaws.com/ping/host
-
 {"message":"NODE: ip-192-168-13-117.us-west-2.compute.internal, POD IP:192.168.30.127"}
-
 ```
 ```bash
 wget -qO- a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazonaws.com/ping/ping
 {"message":"pong"}
-
 ```
 
 Data Service
 
 ```bash
-
 wget -qO- a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazonaws.com/data/data
-
+{"message":"Database Connected"}
 ```
 
 ```bash
-
 wget -qO- a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazonaws.com/data/host
 {"message":"NODE: ip-192-168-81-157.us-west-2.compute.internal, POD IP:192.168.83.48"}
-
 ```
 Admin Service
 ```bash
-
-wget -qO- a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazonaws.com/admin/admin
-{"message":"Admin Sections"} 
+wget -qO- a917eecbc873d11eaa1d606b2a3d6519-56d02fd4cb4ef6f7.elb.us-west-2.amazonaws.com/admin/host
+{"message":"NODE: ip-192-168-36-240.us-west-2.compute.internal, POD IP:192.168.42.253"} 
 ```
 
 Clean Up
 
-Make sure to delete the Ingress Resource since it creates AWS Resources
+Make sure to delete the Ingress Resource since it creates AWS Resources, and the EKS cluster
 
 ```bash
 kubectl delete -f nginx-ingress-controller.yml
+```
+```bash
+eksctl delete cluster --name attractive-sculpture-1587846638
 ```
 
