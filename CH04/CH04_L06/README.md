@@ -6,7 +6,7 @@
 1. Deploy EKS Cluster
 2. Deploy Applications and Services 
 3. Deploy NGINX Ingress Controller
-4. Setup ingress rules 
+4. Setup Ingress rules 
 5. Test
 
 ### Prereq
