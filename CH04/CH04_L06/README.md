@@ -1,5 +1,7 @@
 # Ingress Lab
 
+![](./ACG_AD_NET_K8_AWS_CH04_L06.jpg)
+
 ### Objectives
 1. Deploy EKS Cluster
 2. Deploy Services 
