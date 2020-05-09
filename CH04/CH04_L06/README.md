@@ -73,7 +73,6 @@ Backing applications pods for Services
 kubectl apply -f app.yml,database.yml
 ```
 ```bash
-service/app-test-service created
 deployment.apps/app created
 service/postgres created
 configmap/postgres-config created
