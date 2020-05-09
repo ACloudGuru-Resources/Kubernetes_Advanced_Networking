@@ -14,10 +14,6 @@ spec:
             backend:
               serviceName: ping-service
               servicePort: 8080
-          - path: /ping/host
-            backend:
-              serviceName: ping-service
-              servicePort: 8080
           - path: /data(/|$)(.*)
             backend:
               serviceName: data-service
