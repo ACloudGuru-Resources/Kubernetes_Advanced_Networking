@@ -188,6 +188,7 @@ Output
       *
                   /ping   ping-service:8080 
                   /data   data-service:8080
+                  /admin   admin-service:8080
     Annotations:  kubernetes.io/ingress.class: nginx
                   nginx.ingress.kubernetes.io/ssl-redirect: false
     Events:
