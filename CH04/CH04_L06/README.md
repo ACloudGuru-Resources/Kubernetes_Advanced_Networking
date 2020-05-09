@@ -4,8 +4,8 @@
 
 ### Objectives
 1. Deploy EKS Cluster
-2. Deploy Services 
-3. Deploy Nginx Ingress Controller
+2. Deploy Applications and Services 
+3. Deploy NGINX Ingress Controller
 4. Setup ingress rules 
 5. Test
 
