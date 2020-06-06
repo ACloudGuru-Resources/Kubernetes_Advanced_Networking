@@ -168,7 +168,7 @@ app-ff9cd5f65-d55vk   1/1     Running   0          7s
 app-ff9cd5f65-hlfqd   1/1     Running   0          7s
 app-ff9cd5f65-lcwks   1/1     Running   0          7s
 app-ff9cd5f65-lvpkq   1/1     Running   0          7s
-app-ff9cd5f65-p6rwq   1/1     Running   0          7s
+app-ff9cd5f65-p6rwq   1/1     Running   0          7sx`
 app-ff9cd5f65-qh4qs   1/1     Running   0          7s
 dnsutils              1/1     Running   0          14m
 app-ff9cd5f65-76xhg   1/1     Running   0          36s

@@ -158,6 +158,8 @@ If we follow the chain KUBE-SVC-SR75RJIBNEHN2H65
 
 You can see that it Destination NAT to the pod ip 10.244.1.9
 
+And The KUBE-MARK-MASQ is the Source NAT for the node IP
+
 ```bash
 docker exec -it nodeport-worker3 iptables -L KUBE-SVC-SR75RJIBNEHN2H65 -t nat
 Chain KUBE-SVC-SR75RJIBNEHN2H65 (2 references)
