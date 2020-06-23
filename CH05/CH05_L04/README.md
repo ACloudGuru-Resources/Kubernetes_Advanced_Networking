@@ -133,7 +133,7 @@ deployment.apps/data created
 deployment.apps/admin created
 ```
 
-3.4 Deploy Application Serivces
+3.4 Deploy Application Services
 ```bash
  kubectl apply -f app-nodeport-service.yml
 ```
@@ -296,8 +296,6 @@ wget -qO- 764a4912-default-app-c21c-1446509588.us-west-2.elb.amazonaws.com/ping
 ```
 
 Clean Up 
-
-You will need a similar setup for App Mesh lecture, so again, you can delete and recreate for the next lab or leave it running
 
 ```bash
 kubectl delete -f alb-ingress-controller.yml,alb-ingress-rule.yml,app-nodeport-service.yml

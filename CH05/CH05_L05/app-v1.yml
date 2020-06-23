@@ -2,15 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ping
+  namespace: app-mesh-lab
+  labels:
+    app: ping
 spec:
   selector:
     matchLabels:
       app: ping
+      version: v1
   replicas: 1
   template:
     metadata:
       labels:
         app: ping
+        version: v1
     spec:
       containers:
         - name: ping
@@ -64,15 +69,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: data
+  namespace: app-mesh-lab
 spec:
   selector:
     matchLabels:
       app: data
+      version: v1
   replicas: 1
   template:
     metadata:
       labels:
         app: data
+        version: v1
     spec:
       containers:
         - name: data
@@ -114,15 +122,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: admin
+  namespace: app-mesh-lab
 spec:
   selector:
     matchLabels:
       app: admin
+      version: v1
   replicas: 1
   template:
     metadata:
       labels:
         app: admin
+        version: v1
     spec:
       containers:
         - name: admin

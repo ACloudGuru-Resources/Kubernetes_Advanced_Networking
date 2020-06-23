@@ -5,12 +5,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: pingv2
+      app: ping
+      version: v2
   replicas: 1
   template:
     metadata:
       labels:
-        app: pingv2
+        app: ping
+        version: v2
     spec:
       containers:
         - name: pingv2
@@ -19,8 +21,8 @@ spec:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /data
