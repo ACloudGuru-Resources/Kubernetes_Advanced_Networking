@@ -166,15 +166,43 @@ replicaset.apps/appmesh-controller-96445c45c   1         0         0       55s
 
 2.3 App mesh components for Application 
 
-Now will deploy the Virtual Service, Routers and Nodes for the Ping, Data and Admin Applications
-2.3.1  
+2.3.1 Deploy the Mesh
 
 ```bash
 kubectl apply -f app-mesh.yml
 ```
 Output
 ```bash
+{
+    "mesh": {
+        "meshName": "app-mesh-lab",
+        "metadata": {
+            "arn": "arn:aws:appmesh:us-west-2::mesh/app-mesh-lab",
+            "createdAt": "2020-06-22T21:05:18.332000-04:00",
+            "lastUpdatedAt": "2020-06-22T21:05:18.332000-04:00",
+            "uid": "f80b4ea8-ff40-46ed-bf63-aed217fe986c",
+            "version": 1
+        },
+        "spec": {},
+        "status": {
+            "status": "ACTIVE"
+        }
+    }
+}
 
+```
+
+Verify the App Mesh is active
+```bash
+aws appmesh describe-mesh --mesh-name app-mesh-lab
+```
+
+2.3.2 Now will deploy the Virtual Service, Routers and Nodes for the Ping, Data and Admin Applications
+```bash
+kubectl apply -f app-mesh-virtual.yml
+```
+Output
+```bash
 ```
 
 3. Deploy Test Application 

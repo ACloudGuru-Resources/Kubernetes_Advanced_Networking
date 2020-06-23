@@ -1,0 +1,86 @@
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualNode
+metadata:
+  name: ping
+  namespace: app-mesh-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: ping
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+      healthCheck:
+        protocol: http
+        path: '/'
+        healthyThreshold: 5
+        unhealthyThreshold: 5
+        timeoutMillis: 2000
+        intervalMillis: 5000
+  backends:
+    - virtualService:
+        virtualServiceRef:
+          name: ping
+  serviceDiscovery:
+    dns:
+      hostname: ping.app-mesh-lab.svc.cluster.local
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualService
+metadata:
+  name: ping
+  namespace: app-mesh-lab
+spec:
+  awsName: ping.app-mesh-lab.svc.cluster.local
+  provider:
+    virtualRouter:
+      virtualRouterRef:
+        name: ping-router
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualRouter
+metadata:
+  name: ping-router
+  namespace: app-mesh-lab
+spec:
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+  routes:
+    - name: ping-route
+      httpRoute:
+        match:
+          prefix: /
+        action:
+          weightedTargets:
+            - virtualNodeRef:
+                name: ping-v1
+              weight: 100
+---
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualNode
+metadata:
+  name: ping-v1
+  namespace: app-mesh-lab
+spec:
+  podSelector:
+    matchLabels:
+      app: ping
+      version: v1
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+      healthCheck:
+        protocol: http
+        path: '/ping'
+        healthyThreshold: 5
+        unhealthyThreshold: 5
+        timeoutMillis: 2000
+        intervalMillis: 5000
+  serviceDiscovery:
+    dns:
+      hostname: ping-v1.app-mesh-lab.svc.cluster.local
