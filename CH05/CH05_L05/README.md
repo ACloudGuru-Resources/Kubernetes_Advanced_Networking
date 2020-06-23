@@ -205,6 +205,14 @@ Output
 ```bash
 ```
 
+Verify the Virtual Service in AWS
+aws appmesh list-virtual-services --mesh-name app-mesh-lab
+
+aws appmesh list-virtual-nodes --mesh-name app-mesh-lab
+
+aws appmesh list-virtual-routers --mesh-name app-mesh-lab
+
+
 3. Deploy Test Application 
 
 3.1 DNS Utils
@@ -242,42 +250,9 @@ deployment.apps/data created
 deployment.apps/admin created
 ```
 
-3.4 Deploy Application Services
-```bash
- kubectl apply -f app-nodeport-service.yml
-```
-Output
-```bash
-service/ping-service created
-service/data-service created
-service/admin-service created
-```
+4. Verify App Mesh Connectivity 
 
-3.5 Verify Services are reachable inside the cluster
-```bash 
-± |master {1} U:1 ✗| → kc exec -it dnsutils -- wget -qO- ping-service/host
-{"message":"NODE: ip-192-168-37-167.us-west-2.compute.internal, POD IP:192.168.61.137"}
 
-kubectl exec -it dnsutils -- wget -qO- ping-service/host
-{"message":"NODE: ip-192-168-37-167.us-west-2.compute.internal, POD IP:192.168.61.137"}
-
-kubectl exec -it dnsutils -- wget -qO- data-service/host
-{"message":"NODE: ip-192-168-22-1.us-west-2.compute.internal, POD IP:192.168.29.180"}
-
-kubectl exec -it dnsutils -- wget -qO- admin-service/host
-{"message":"NODE: ip-192-168-37-167.us-west-2.compute.internal, POD IP:192.168.42.187"}
-
-kubectl exec -it dnsutils -- wget -qO- admin-service/data
-{"message":"Database Connected"}
-
-kubectl exec -it dnsutils -- wget -qO- ping-service/data
-{"message":"Database Connected"}
-
-kubectl exec -it dnsutils -- wget -qO- data-service/data
-{"message":"Database Connected"}
-```
-
-4. Verify
 
 
 5. Clean up 
@@ -286,6 +261,11 @@ Delete the IAM account
 ```bash
  eksctl delete iamserviceaccount    --cluster app-mesh-lab   --namespace app-mesh-lab   --name app-mesh-lab-controller
  ```
+
+Delete the Mesh 
+```bash
+kubectl delete -f app-mesh.yml
+```
 
 Delete the Cluster
 ```bash

@@ -145,7 +145,7 @@ service/admin-service created
 
 3.5 Verify Services are reachable inside the cluster
 ```bash 
-± |master {1} U:1 ✗| → kc exec -it dnsutils -- wget -qO- ping-service/host
+kubectl exec -it dnsutils -- wget -qO- ping-service/host
 {"message":"NODE: ip-192-168-37-167.us-west-2.compute.internal, POD IP:192.168.61.137"}
 
 kubectl exec -it dnsutils -- wget -qO- ping-service/host
