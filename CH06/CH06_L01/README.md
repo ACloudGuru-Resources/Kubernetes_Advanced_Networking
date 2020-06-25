@@ -30,6 +30,8 @@ To Delete it
 eksctl delete cluster --name $CLUSTER_NAME
 ```
 
+If eksctl is having issues you can always go the Cloudformation AWS Console to debug issues deleting the cluster. 
+
 ### 3. Load Balancers
 
 Verify there are no Load balancers running, ALB or otherwise
