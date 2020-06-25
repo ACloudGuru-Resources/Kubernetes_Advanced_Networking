@@ -212,8 +212,7 @@ kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o 'alb-ingr
 Check the events of the ingress to see what has occurred.
 
 ```bash
-kubectl describe ing ping
-```
+kubectl describe ing app
 ```bash
 kubectl describe ing
 Name:             admin

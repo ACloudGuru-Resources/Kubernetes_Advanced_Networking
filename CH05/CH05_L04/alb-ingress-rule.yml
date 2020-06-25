@@ -22,4 +22,4 @@ spec:
           - path: /admin
             backend:
               serviceName: admin-service
-              servicePort: 80
+              servicePort: 8090
