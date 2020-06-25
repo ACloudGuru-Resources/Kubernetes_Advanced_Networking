@@ -1,3 +1,5 @@
+# AWS ALB Controller Lab
+
 ### Objectives
 1. Deploy EKS Cluster
 2. Deploy ALB Ingress Controller 
@@ -254,10 +256,6 @@ Events:
   ----    ------  ----   ----                    -------
   Normal  CREATE  9m49s  alb-ingress-controller  LoadBalancer 764a4912-default-ping-2c80 created, ARN: arn:aws:elasticloadbalancing:us-west-2:363534682973:loadbalancer/app/764a4912-default-ping-2c80/d849c71b26b29b06
   Normal  CREATE  9m48s  alb-ingress-controller  rule 1 created with conditions [{    Field: "path-pattern",    PathPatternConfig: {      Values: ["/ping"]    }  }]
-```
-
-```bash
-
 ```
 
 You can view the ALB Ingress logs as well 
