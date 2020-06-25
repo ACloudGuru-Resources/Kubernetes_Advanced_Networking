@@ -56,6 +56,9 @@ eksctl create cluster -N 3 --name alb-ingress-lab --alb-ingress-access
 
 ### 2. Deploy ALB Ingress Controller 
 
+*Note*: This is using an admin IAM account, which has access to the entire AWS account, youll want to lock it down
+ in production, AWS Provides an example IAM policy [here](https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json)
+ 
 2.1 Deploy rbac role for ALB Ingress Controller
 
 ```bash
@@ -200,7 +203,7 @@ Verify the alb-ingress-controller creates the resources
 kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o 'alb-ingress[a-zA-Z0-9-]+') | grep 'ping'
 ```
 
-Check the events of the ingress to see what has occured.
+Check the events of the ingress to see what has occurred.
 
 ```bash
 kubectl describe ing ping
@@ -296,7 +299,9 @@ wget -qO- 764a4912-default-app-c21c-1446509588.us-west-2.elb.amazonaws.com/ping
 {"message":"pong"}
 ```
 
-Clean Up 
+### 5. Clean Up 
+
+Delete the application, the ALB and the ALB Controller
 
 ```bash
 kubectl delete -f alb-ingress-controller.yml,alb-ingress-rule.yml,app-nodeport-service.yml
