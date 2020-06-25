@@ -1,10 +1,13 @@
 # AWS ALB Controller Lab
 
+![](ACG_AD_NET_K8_AWS_CH05_L04.png)
+
 ### Objectives
 1. Deploy EKS Cluster
 2. Deploy ALB Ingress Controller 
 3. Deploy Test Application 
 4. Verify
+5. Clean
 
 ### Prereq
 1. Deploy an EKS Cluster 
