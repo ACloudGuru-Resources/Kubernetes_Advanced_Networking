@@ -44,9 +44,10 @@ spec:
     - name: service-port
       protocol: TCP
       port: 80
-      targetPort: 8090
+      targetPort: 8080
+      nodePort: 30043
     - name: admin-port
       protocol: TCP
       port: 8090
       targetPort: 8090
-      nodePort: 30043
+      nodePort: 30044
