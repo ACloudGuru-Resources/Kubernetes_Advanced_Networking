@@ -108,6 +108,12 @@ I0428 23:08:59.704375       1 controller.go:154] kubebuilder/controller "level"=
 ```
 ### 3. Deploy Test Application 
 
+You can deploy them individually or all together
+
+```bash
+kubectl apply -f dnsutils.yml,database.yml,app.yml,app-nodeport-service.yml
+```
+
 3.1 DNS Utils
 ```bash
 kubectl apply -f dnsutils.yml
