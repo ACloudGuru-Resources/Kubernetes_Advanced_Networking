@@ -25,5 +25,5 @@ Advanced Networking with Kubernetes on AWS
 - [Ch05_L04 - AWS ALB Ingress Controller](CH05/CH05_L04) 
 - [Ch05_L05 - AWS App Mesh](CH05/CH05_L05) 
 
-### Chapter 6 Conclusion and Next steps
-- [Ch06_L01 - Lab Clean up](CH06/CH06_L01) 
+### Clean up
+- [Clean up](Cleanup.md) 
