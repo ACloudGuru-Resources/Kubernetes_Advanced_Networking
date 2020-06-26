@@ -1,9 +1,0 @@
----
-apiVersion: appmesh.k8s.aws/v1beta2
-kind: Mesh
-metadata:
-  name: app-mesh-lab
-spec:
-  namespaceSelector:
-    matchLabels:
-      mesh: app-mesh-lab
