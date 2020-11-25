@@ -1,7 +1,7 @@
 # A Cloud Guru course Advanced Networking with Kubernetes on AWS
 
 This is the repo for all the code examples and labs for the A Cloud Guru Course 
-Advanced Networking with Kubernetes on AWS
+[Advanced Networking with Kubernetes on AWS](https://acloud.guru/overview/advanced-networking-with-kubernetes-for-aws)
 
 ### Chapter 1 COURSE INTRODUCTION
 - [Ch01_L05 - Installing required tools](CH01/CH01_L05)
