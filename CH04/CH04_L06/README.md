@@ -70,13 +70,16 @@ service/admin-service configured
 Backing applications pods for Services
 
 ```bash
-kubectl apply -f app.yml,database.yml
+kubectl apply -f app.yml,database.yml,dnsutils.yml
 ```
 ```bash
-deployment.apps/app created
+deployment.apps/ping created
+deployment.apps/data created
+deployment.apps/admin created
 service/postgres created
 configmap/postgres-config created
 statefulset.apps/postgres created
+pod/dnsutils created
 ```
 
 Verify that services are working 
